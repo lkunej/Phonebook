@@ -1,0 +1,16 @@
+﻿@model List<PhoneBookNamespace.DAL.Models.Phonebook>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Phonebooks</h1>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @foreach (var phonebook in Model)
+        {
+            @Html.DisplayFor(modelItem => phonebook.PhonebookName)
+        }
+    </div>
+</div>

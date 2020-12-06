@@ -1,0 +1,107 @@
+﻿@model PhoneBookNamespace.BindingModels.ContactBindingModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Contact</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationMessage("Error")
+        <div class="form-group" style="display:none;">
+            @Html.LabelFor(model => model.PhonebookId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PhonebookId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PhonebookId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Lastname, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Lastname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Lastname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNumbers, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div id="phone-numbers-div" class="col-md-10">
+                @for (int i = 0; i < Model.PhoneNumbers.Count; i++)
+                {
+                    @Html.HiddenFor(model => model.PhoneNumbers[i].Id)
+                    @Html.HiddenFor(model => model.PhoneNumbers[i].ContactId)
+                    @Html.TextBoxFor(model => model.PhoneNumbers[i].Number)
+
+                    <br />
+                }
+            </div>
+            <div class="col-md-10 col-md-offset-2"><a id="btnAddNumber">Add number</a></div>
+
+            <hr />
+            <br />
+
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10 pull-right">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back To Phonebook", "Details", "Phonebooks", new { id = Model.PhonebookId }, null)
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render(@Url.Content("/Scripts/app/Contact/contact.js"))
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var $fields = $('#phone-numbers-div');
+
+            $('#btnAddNumber').click(function (e) {
+                var i = $('#phone-numbers-div input[type="text"]').length;
+                e.preventDefault();
+                $('<input id="PhoneNumbers_' + i + '__Number" name="PhoneNumbers[' + i + '].Number" type="text"/><br/>').appendTo($fields);
+            });
+        });
+
+    </script>
+}

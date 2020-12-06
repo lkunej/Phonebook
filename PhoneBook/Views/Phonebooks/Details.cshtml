@@ -1,0 +1,73 @@
+﻿@model PhoneBookNamespace.BindingModels.PhonebookBindingModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+
+<h2>@Html.DisplayFor(model => model.Name)</h2>
+<input type="hidden" id="phonebookId" value="@Model.Id"></>
+<div>
+    <h4>Contacts</h4>
+    <hr />
+    <p>@Html.ActionLink("Create Contact", "Create", "Contacts", new { id = Model.Id }, null)</p>
+
+    <div class="row">
+        <table class="table display"
+               id="contacts-table">
+            <thead>
+                <tr>
+                    <th> Name </th>
+                    <th> Last name</th>
+                    <th> Numbers </th>
+                    <th> Actions </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.ContactsPagedList)
+                {
+                    <tr>
+                        <td>@c.Name</td>
+                        <td>@c.Lastname</td>
+                        <td>@Html.ActionLink(@c.PhoneNumbers.Count.ToString(), "Details", "Contacts", new { id = c.Id }, null)</td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Contacts", new { id = c.Id }, null) |
+                            @Html.ActionLink("Details", "Details", "Contacts", new { id = c.Id }, null) |
+                            @Html.ActionLink("Delete", "Delete", "Contacts", new { id = c.Id }, null)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.PagedListPager((IPagedList)Model.ContactsPagedList, page => Url.Action("Details", new { page }))
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Change Phonebook Name", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render(@Url.Content("/Scripts/app/Phonebook/phonebook.js"))
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.22/datatables.min.css" />
+
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.22/datatables.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#contacts-table').DataTable({
+                "paging": false,
+                "bInfo": false,
+                "bFilter": false
+            });
+        });
+
+    </script>
+
+}
+
+
